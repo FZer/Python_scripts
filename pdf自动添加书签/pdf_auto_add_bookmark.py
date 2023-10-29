@@ -3,6 +3,7 @@
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import time
+import unicodedata
 
 
 # 自动为pdf添加书签目录。目录的获取方式：
@@ -17,6 +18,7 @@ def book_dir(txt_in: str, txt_out: str):
                     list = each_line.split()  # 先以空格做分割
                     name_dir = ''
                     # 以点做分割。注意文本中的字符（全角Unicode和半角Unicode）
+                    # title = unicodedata.normalize('NFKC', title) #将全角字符改成半角字符
                     index = list[0].replace('．', '.').split('.')
                     if (len(index) > 1):  # 第二级目录
                         f.write('\t')
