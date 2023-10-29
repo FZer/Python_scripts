@@ -1,3 +1,6 @@
+# -*- coding:utf-8 -*-
+# # pypdf2==2.11.1
+
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import time
 
@@ -14,7 +17,7 @@ def book_dir(txt_in: str, txt_out: str):
                     list = each_line.split()  # 先以空格做分割
                     name_dir = ''
                     # 以点做分割。注意文本中的字符（全角Unicode和半角Unicode）
-                    index = list[0].split('．')
+                    index = list[0].replace('．', '.').split('.')
                     if (len(index) > 1):  # 第二级目录
                         f.write('\t')
                         if (len(index) > 2):  # 第三级目录。假如还有下级目录，可以继续追加
@@ -22,7 +25,7 @@ def book_dir(txt_in: str, txt_out: str):
                     for i in range(len(list) - 1):  # 去掉倒数第一个的页数内容
                         name_dir += str(list[i])
                     f.write(name_dir)
-                    f.write('  ' + str(int(list[-1]) + 17))  # 加上与实际页数相差的12页
+                    f.write('  ' + str(int(list[-1]) + 13))  # 加上与实际页数相差的页数
                     f.write("\n")
                 except Exception:
                     continue
@@ -48,15 +51,15 @@ def marks_book(pdf: str, bookmarks: str, out_pdf: str):
 
 
 if __name__ == '__main__':
-    txt_in = r"F:\BaiduNetdiskDownload\pdf相关脚本\目录_未处理模板.txt"
-    bookmarks = r"F:\BaiduNetdiskDownload\pdf相关脚本\目录_处理后模板.txt"
-    pdf_path = r"F:\BaiduNetdiskDownload\pdf相关脚本\JavaScript_DOM编程艺术.pdf"
+    txt_in = r"C:\Users\kler\Downloads\Python_scripts-main\pdf自动添加书签\moban.txt"
+    bookmarks = r"C:\Users\kler\Downloads\Python_scripts-main\pdf自动添加书签\moban_已处理模板.txt"
+    pdf_path = r"C:\Users\kler\Downloads\Python_scripts-main\pdf自动添加书签\Python Web自动化测试入门与实.pdf"
     book_dir(txt_in, bookmarks)
     time.sleep(2)
     marks_book(
         pdf_path,
         bookmarks,
-        r"F:\BaiduNetdiskDownload\pdf相关脚本\JavaScriptDOM编程艺术_第二版.pdf"
+        r"C:\Users\kler\Downloads\Python_scripts-main\pdf自动添加书签\Python Web自动化测试入门与实222.pdf"
     )
 
 # pypdf2==2.11.1的源文件_writer.py修改内容如下：
