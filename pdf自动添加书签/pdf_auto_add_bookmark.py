@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 # pypdf>=3.0
 
-
 import time
 
 from pypdf import PdfReader, PdfWriter
