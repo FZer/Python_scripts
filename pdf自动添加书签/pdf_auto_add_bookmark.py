@@ -18,27 +18,62 @@ class pdf_add_bookmark:
         pdf_catalog_txt_out = pdf_catalog_txt.split(
             '.')[0] + f'_{self.current_time}.' + pdf_catalog_txt.split('.')[1]
 # 优化结构
-        with open(pdf_catalog_txt_out, "a", encoding='utf-8') as f:
-            f.truncate(0)
-            with open(pdf_catalog_txt, "r", encoding='utf-8') as f_in:
-                for each_line in f_in:
-                    try:
-                        list = each_line.split()  # 先以空格做分割
-                        name_dir = ''
-                        # 以点做分割。注意文本中的字符（全角Unicode和半角Unicode）
-                        index = list[0].replace('．', '.').split('.')
-                        if (len(index) > 1):  # 第二级目录
-                            f.write('\t')
-                            if (len(index) > 2):  # 第三级目录。假如还有下级目录，可以继续追加
-                                f.write('\t')
-                        for i in range(len(list) - 1):  # 去掉倒数第一个的页数内容
-                            name_dir += str(list[i])
-                        f.write(name_dir)
-                        # 加上与实际页数相差的页数
-                        f.write('  ' + str(int(list[-1]) + page_offset))
-                        f.write("\n")
-                    except Exception:
+        with open(pdf_catalog_txt, "r", encoding='utf-8') as f:
+            lines = f.readlines()
+        with open(pdf_catalog_txt_out, "w", encoding='utf-8') as f:
+            for each_line in lines:
+                if not each_line.strip():
+                    continue
+                try:
+                    parts = each_line.split()  # 先以空格做分割
+                    if len(parts) < 1:  # 确保有足够的部分
                         continue
+
+                    # 以点做分割。注意文本中的字符（全角Unicode和半角Unicode）
+                    index_parts = parts[0].replace('．', '.').split('.')
+
+                    # 计算缩进级别（根据索引部分的数量判断）
+                    indent_level = max(0, len(index_parts) - 1)
+
+                    # 构建标题（除了最后一个元素外的所有部分）
+                    title = ''.join(parts[:-1])  # 合并除最后一页码外的所有部分
+
+                    # 获取页码并加上偏移
+                    page_num_str = parts[-1]  # 最后一部分应该是页码
+                    page_num = int(page_num_str) + page_offset
+
+                    # 写入缩进
+                    f.write('\t' * indent_level)
+
+                    # 写入标题和页码
+                    f.write(f"{title}  {page_num}\n")
+
+                except Exception as e:
+                    # 如果转换页码失败或索引超出范围，则跳过此行
+                    print(f"处理目录文件的 {each_line.strip()}行时出错:，错误信息: {e}")
+                    continue
+        # with open(pdf_catalog_txt_out, "a", encoding='utf-8') as f:
+        #     f.truncate(0)
+        #     with open(pdf_catalog_txt, "r", encoding='utf-8') as f_in:
+        #         for each_line in f_in:
+        #             try:
+        #                 list = each_line.split()  # 先以空格做分割
+        #                 name_dir = ''
+        #                 # 以点做分割。注意文本中的字符（全角Unicode和半角Unicode）
+        #                 index = list[0].replace('．', '.').split('.')
+        #                 if (len(index) > 1):  # 第二级目录
+        #                     f.write('\t')
+        #                     if (len(index) > 2):  # 第三级目录。假如还有下级目录，可以继续追加
+        #                         f.write('\t')
+        #                 for i in range(len(list) - 1):  # 去掉倒数第一个的页数内容
+        #                     name_dir += str(list[i])
+        #                 f.write(name_dir)
+        #                 # 加上与实际页数相差的页数
+        #                 f.write('  ' + str(int(list[-1]) + page_offset))
+        #                 f.write("\n")
+        #             except Exception:
+        #                 continue
+
         # with open(txt_out, 'r', encoding='utf-8') as file:
         #     lines = file.readlines()
         #     for line in lines:
