@@ -52,27 +52,29 @@ class pdf_add_bookmark:
                     # 如果转换页码失败或索引超出范围，则跳过此行
                     print(f"处理目录文件的 {each_line.strip()}行时出错:，错误信息: {e}")
                     continue
+
         # with open(pdf_catalog_txt_out, "a", encoding='utf-8') as f:
         #     f.truncate(0)
-        #     with open(pdf_catalog_txt, "r", encoding='utf-8') as f_in:
-        #         for each_line in f_in:
-        #             try:
-        #                 list = each_line.split()  # 先以空格做分割
-        #                 name_dir = ''
-        #                 # 以点做分割。注意文本中的字符（全角Unicode和半角Unicode）
-        #                 index = list[0].replace('．', '.').split('.')
-        #                 if (len(index) > 1):  # 第二级目录
+        #     for each_line in lines:
+        #         # if not each_line.strip():
+        #         #     continue
+        #         try:
+        #             list = each_line.split()  # 先以空格做分割
+        #             name_dir = ''
+        #             # 以点做分割。注意文本中的字符（全角Unicode和半角Unicode）
+        #             index = list[0].replace('．', '.').split('.')
+        #             if (len(index) > 1):  # 第二级目录
+        #                 f.write('\t')
+        #                 if (len(index) > 2):  # 第三级目录。假如还有下级目录，可以继续追加
         #                     f.write('\t')
-        #                     if (len(index) > 2):  # 第三级目录。假如还有下级目录，可以继续追加
-        #                         f.write('\t')
-        #                 for i in range(len(list) - 1):  # 去掉倒数第一个的页数内容
-        #                     name_dir += str(list[i])
-        #                 f.write(name_dir)
-        #                 # 加上与实际页数相差的页数
-        #                 f.write('  ' + str(int(list[-1]) + page_offset))
-        #                 f.write("\n")
-        #             except Exception:
-        #                 continue
+        #             for i in range(len(list) - 1):  # 去掉倒数第一个的页数内容
+        #                 name_dir += str(list[i])
+        #             f.write(name_dir)
+        #             # 加上与实际页数相差的页数
+        #             f.write('  ' + str(int(list[-1]) + page_offset))
+        #             f.write("\n")
+        #         except Exception:
+        #             continue
 
         # with open(txt_out, 'r', encoding='utf-8') as file:
         #     lines = file.readlines()
@@ -127,7 +129,7 @@ if __name__ == '__main__':
     a.add_bookmarks(
         pdf_catalog_txt=pdf_catalog_txt,
         pdf_file_path=pdf_file_path,
-        page_offset=20)
+        page_offset=2)
 
 
 '''
