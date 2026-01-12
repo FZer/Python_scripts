@@ -18,7 +18,7 @@ class pdf_add_bookmark:
     def book_dir(self, pdf_catalog_txt: str, page_offset: int = 17) -> None:
         pdf_catalog_txt_out = pdf_catalog_txt.split(
             '.')[0] + f'_{self.current_time}.' + pdf_catalog_txt.split('.')[1]
-
+# 优化结构
         with open(pdf_catalog_txt_out, "a", encoding='utf-8') as f:
             f.truncate(0)
             with open(pdf_catalog_txt, "r", encoding='utf-8') as f_in:
